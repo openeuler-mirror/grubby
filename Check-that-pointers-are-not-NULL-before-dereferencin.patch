@@ -1,0 +1,39 @@
+From 90e25125a8e26560a8e0fe27462ea639ad0b309b Mon Sep 17 00:00:00 2001
+From: Javier Martinez Canillas <javierm@redhat.com>
+Date: Fri, 15 Mar 2019 10:14:42 +0100
+Subject: [PATCH 59/60] Check that pointers are not NULL before
+dereferencing
+ them
+
+The coverity scan complains that the argValueMatch() function derefences
+the chptra and chptrb pointers when these may be NULL. That's not really
+true since the function first checks if both aren't NULL and then only
+dereferences one when the other is NULL.
+
+But still this confuses coverity, so to make it happy let's just check
+if the pointer isn't NULL before derefencing them.
+
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+---
+ grubby.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/grubby.c b/grubby.c
+index 1de7b52..522d4d5 100644
+--- a/grubby.c
++++ b/grubby.c
+@@ -3340,9 +3340,9 @@ static int argValueMatch(const char *one, const char *two)
+ 
+        if (!chptra && !chptrb)
+                return 0;
+-       else if (!chptra)
++       else if (!chptra && chptrb)
+                return *chptrb - 0;
+-       else if (!chptrb)
++       else if (!chptrb && chptra)
+                return 0 - *chptra;
+        else
+                return strcmp(chptra, chptrb);
+-- 
+2.19.1
+

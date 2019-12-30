@@ -1,0 +1,28 @@
+From 191c79fe21c51ee893e40e2f53c03175286fdb0f Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Thu, 2 Jul 2015 12:44:51 -0400
+Subject: [PATCH 08/60] Emit better systemd debug settings on debug entries.
+
+Resolves: rhbz#1212128
+
+Signed-off-by: Peter Jones <pjones@redhat.com>
+---
+ new-kernel-pkg | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/new-kernel-pkg b/new-kernel-pkg
+index 1cdbbb9..1f6ab39 100755
+--- a/new-kernel-pkg
++++ b/new-kernel-pkg
+@@ -121,7 +121,7 @@ mbkernel="$HYPERVISOR"
+ mbargs="$HYPERVISOR_ARGS"
+ adddracutargs=""
+ addplymouthinitrd=""
+-DEBUGARG="systemd.debug"
++DEBUGARG="systemd.log_level=debug systemd.log_target=kmsg"
+ 
+ usage() {
+     echo "Usage: `basename $0` [-v] [--mkinitrd] [--rminitrd] [--dracut]" >&2
+-- 
+1.8.3.1
+
