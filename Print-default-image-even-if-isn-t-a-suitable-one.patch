@@ -1,0 +1,51 @@
+From ee49b7b71d017097be5b4a0f32bff83379b0a86e Mon Sep 17 00:00:00 2001
+From: Javier Martinez Canillas <javierm@redhat.com>
+Date: Mon, 18 Mar 2019 12:53:23 +0100
+Subject: [PATCH 60/60] Print default image even if isn't a suitable one
+
+The grubby --default-kernel option only prints the default kernel if
+this
+is a suitable one. That is if its associated kernel cmdline root param
+is
+the same than the partition currently mounted as the filesystem root.
+
+But the grubby --set-default option doesn't have that restriction, it is
+able to set a kernel as the default even if its root is for a different
+partition. So make the --default-kernel option to also print the kernel
+in this case. Still check if is a suitable image so --debug can tell it.
+
+Resolves: rhbz#1323842
+
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+---
+ grubby.c                | 4 +++-
+ test/results/debug/g2.1 | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/grubby.c b/grubby.c
+index 522d4d5..c3249bf 100644
+--- a/grubby.c
++++ b/grubby.c
+@@ -4887,7 +4887,9 @@ int main(int argc, const char ** argv) {
+ 	    config->defaultImage = 0;
+ 	entry = findEntryByIndex(config, config->defaultImage);
+ 	if (!entry) return 0;
+-	if (!suitableImage(entry, bootPrefix, 0, flags)) return 0;
++
++        /* check if is a suitable image but still print it */
++        suitableImage(entry, bootPrefix, 0, flags);
+ 
+ 	line = getLineByType(LT_KERNEL|LT_HYPER|LT_KERNEL_EFI|LT_KERNEL_16, entry->lines);
+ 	if (!line) return 0;
+diff --git a/test/results/debug/g2.1 b/test/results/debug/g2.1
+index f5187f5..d579b59 100644
+--- a/test/results/debug/g2.1
++++ b/test/results/debug/g2.1
+@@ -12,3 +12,4 @@ DBG: 	linux	/vmlinuz-2.6.38.8-32.fc15.x86_64 root=/dev/mapper/vg_pjones5-lv_root
+ DBG: 	echo	'Loading initial ramdisk ...'
+ DBG: 	initrd	/initramfs-2.6.38.8-32.fc15.x86_64.img
+ DBG: }
++/boot/vmlinuz-2.6.38.8-32.fc15.x86_64
+-- 
+2.19.1
+

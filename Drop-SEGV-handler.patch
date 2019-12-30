@@ -1,0 +1,52 @@
+From d1309f34c347bea393582b5d927db1c7c577198c Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Thu, 27 Feb 2014 10:35:59 +0100
+Subject: [PATCH 06/60] Drop SEGV handler
+
+The generated tracebacks are mostly useless without debuginfo (which is likely
+not present if the crash is not anticipated) and prevent ABRT from doing a
+better job.
+
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+---
+ grubby.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
+
+diff --git a/grubby.c b/grubby.c
+index 440c627..649597e 100644
+--- a/grubby.c
++++ b/grubby.c
+@@ -4211,21 +4211,6 @@ int addNewKernel(struct grubConfig * config, struct singleEntry * template,
+     return 0;
+ }
+ 
+-static void traceback(int signum)
+-{
+-    void *array[40];
+-    size_t size;
+-
+-    signal(SIGSEGV, SIG_DFL);
+-    memset(array, '\0', sizeof (array));
+-    size = backtrace(array, 40);
+-
+-    fprintf(stderr, "grubby received SIGSEGV!  Backtrace (%ld):\n",
+-            (unsigned long)size);
+-    backtrace_symbols_fd(array, size, STDERR_FILENO);
+-    exit(1);
+-}
+-
+ int main(int argc, const char ** argv) {
+     poptContext optCon;
+     const char * grubConfig = NULL;
+@@ -4368,8 +4353,6 @@ int main(int argc, const char ** argv) {
+ 
+     useextlinuxmenu=0;
+ 
+-    signal(SIGSEGV, traceback);
+-
+     int i = 0;
+     for (int j = 1; j < argc; j++)
+ 	i += strlen(argv[j]) + 1;
+-- 
+1.8.3.1
+
