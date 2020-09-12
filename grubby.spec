@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 24
+Release: 25
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -32,6 +32,7 @@ Patch6014: Print-default-image-even-if-isn-t-a-suitable-one.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
 Patch9002: Fix-make-test-fail-for-g2-1.15.patch
+Patch9003: grubby_add_ima_appraisal_entry.patch
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -106,6 +107,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Sat Sep 12 2020 Roberto Sassu <roberto.sassu@huawei.com> - 8.40-25
+- Add grubby_add_ima_appraisal_entry.patch
+
 * Sat Mar 14 2020 openEuler Buildteam <buildteam@openeuler.org> - 8.40-24
 - fixbug in self-building
 
