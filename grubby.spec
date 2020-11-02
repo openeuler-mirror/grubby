@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 24
+Release: 25
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -38,7 +38,7 @@ BuildRequires: libblkid-devel git-core sed make
 BuildRequires: util-linux-ng
 %ifarch aarch64 i686 x86_64
 BuildRequires: grub2-tools-minimal gdb
-Requires: grub2-tools
+Requires: grub2-tools grub2-tools-minimal
 %endif
 
 %description
@@ -106,6 +106,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Mon Nov 2 2020 yixiangzhike <zhangxingliang3@huawei.com> - 8.40-25
+- add grub2-tools-minimal to Requires
+
 * Sat Mar 14 2020 openEuler Buildteam <buildteam@openeuler.org> - 8.40-24
 - fixbug in self-building
 
