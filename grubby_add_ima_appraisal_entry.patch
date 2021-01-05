@@ -1,0 +1,102 @@
+diff -uprN grubby-8.40-1.orig/new-kernel-pkg grubby-8.40-1/new-kernel-pkg
+--- grubby-8.40-1.orig/new-kernel-pkg	2020-09-12 10:55:18.895115971 +0200
++++ grubby-8.40-1/new-kernel-pkg	2020-09-12 11:57:29.959038972 +0200
+@@ -113,6 +113,7 @@ mbargs="$HYPERVISOR_ARGS"
+ adddracutargs=""
+ addplymouthinitrd=""
+ DEBUGARG="systemd.log_level=debug systemd.log_target=kmsg"
++IMA_APPRAISAL_ARG="ima_template=ima-sig ima_policy=\\\"exec_tcb|appraise_exec_tcb|appraise_exec_immutable\\\" initramtmpfs ima_hash=sha256 ima_appraise=enforce-evm evm=allow_metadata_writes evm=x509 ima_digest_list_pcr=11 ima_appraise_digest_list=digest"
+ 
+ usage() {
+     echo "Usage: `basename $0` [-v] [--mkinitrd] [--rminitrd] [--dracut]" >&2
+@@ -134,6 +135,10 @@ rungrubby() {
+ 		declare -x debugtitle=" with debugging"
+ 		declare -x debugargs="$DEBUGARG"
+ 		shift
++	elif [ "$1" == "--ima-appraisal" ]; then
++		declare -x debugtitle=" IMA APPRAISAL"
++		declare -x debugargs="$IMA_APPRAISAL_ARG"
++		shift
+ 	else
+ 		[ -n "$verbose" ] && echo "- Making a normal entry."
+ 	fi
+@@ -232,6 +237,7 @@ install() {
+ 
+ 	rungrubby ${ARGS} $makedefault
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$grubConfig does not exist, not running grubby for grub 0.97"
+     fi
+@@ -246,6 +252,7 @@ install() {
+ 		--remove-kernel=\"TITLE=$title\$debugtitle\""
+ 	rungrubby ${ARGS} $makedefault
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$grub2Config does not exist, not running grubby for grub 2"
+     fi
+@@ -261,6 +268,7 @@ install() {
+ 		--remove-kernel=\"TITLE=$title\$debugtitle\""
+ 	rungrubby ${ARGS} $makedefault
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$grub2EfiConfig does not exist, not running grubby for grub 2 with UEFI"
+     fi
+@@ -277,6 +285,7 @@ install() {
+ 
+ 	rungrubby ${ARGS} $makedefault
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+ 	if [ -n "$runLilo" ]; then
+ 	    [ -n "$verbose" ] && echo "running $lilo"
+ 	    if [ ! -x $lilo ] ; then
+@@ -302,6 +311,7 @@ install() {
+ 
+ 	rungrubby ${ARGS} $makedefault
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$extlinuxConfig does not exist, not running grubby for extlinux"
+     fi
+@@ -422,6 +432,7 @@ update() {
+ 
+ 	rungrubby ${ARGS}
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$grubConfig does not exist, not running grubby"
+     fi
+@@ -435,6 +446,7 @@ update() {
+ 
+ 	rungrubby ${ARGS}
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$grub2Config does not exist, not running grubby"
+     fi
+@@ -448,6 +460,7 @@ update() {
+ 
+ 	rungrubby ${ARGS}
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$grub2EfiConfig does not exist, not running grubby"
+     fi
+@@ -461,6 +474,7 @@ update() {
+ 
+ 	rungrubby ${ARGS}
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+ 
+ 	if [ -n "$runLilo" ]; then
+ 	    [ -n "$verbose" ] && echo "running $lilo"
+@@ -483,6 +497,7 @@ update() {
+ 
+ 	rungrubby ${ARGS}
+ 	rungrubby --debug ${ARGS}
++	rungrubby --ima-appraisal ${ARGS}
+     else
+ 	[ -n "$verbose" ] && echo "$extlinuxConfig does not exist, not running grubby"
+     fi
