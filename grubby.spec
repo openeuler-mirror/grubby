@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 26
+Release: 27
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -38,7 +38,7 @@ BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
 BuildRequires: util-linux-ng
 %ifarch aarch64 i686 x86_64
-BuildRequires: grub2-tools-minimal gdb
+BuildRequires: grub2-tools-minimal
 Requires: grub2-tools grub2-tools-minimal
 %endif
 
@@ -107,6 +107,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Thu Jul 22 2021 yangzhuangzhuang <yangzhuangzhuang1@huawei.com> - 8.40-27
+- Remove unnecessary buildrequires:gdb
+
 - Thu Jan 1 2021 yangzhuangzhuang <yangzhuangzhuang1@huawei.com> - 8.40-26
 - Fix the following problem:The grub.cfg file is modified.As a result,the system fails to start. 
 
