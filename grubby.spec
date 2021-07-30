@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 27
+Release: 28
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -30,6 +30,8 @@ Patch6012: Fix-GCC-warnings-about-possible-string-truncations-a.patch
 Patch6013: Check-that-pointers-are-not-NULL-before-dereferencin.patch
 Patch6014: Print-default-image-even-if-isn-t-a-suitable-one.patch
 Patch6015: backport-Make-SET_VARIABLE-get-handled-individually-in-GetNex.patch
+Patch6016: backport-Fix-stringop-overflow-warning.patch
+Patch6017: backport-Fix-maybe-uninitialized-warning.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
 Patch9002: Fix-make-test-fail-for-g2-1.15.patch
@@ -107,6 +109,10 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Fri Jul 30 2021 yangzhuangzhuang <yangzhuangzhuang1@huawei.com> - 8.40-28
+- Fix stringop-overflow warning
+- Fix maybe-uninitialized warning
+
 * Thu Jul 22 2021 yangzhuangzhuang <yangzhuangzhuang1@huawei.com> - 8.40-27
 - Remove unnecessary buildrequires:gdb
 
