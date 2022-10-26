@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 28
+Release: 29
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -109,6 +109,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Wed Oct 26 2022 yanglongkang <yanglongkang@h-partners.com> - 8.40-29
+- rebuild for next release
+
 * Fri Jul 30 2021 yangzhuangzhuang <yangzhuangzhuang1@huawei.com> - 8.40-28
 - Fix stringop-overflow warning
 - Fix maybe-uninitialized warning
