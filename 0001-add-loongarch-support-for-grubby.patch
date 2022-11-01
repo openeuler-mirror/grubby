@@ -1,0 +1,25 @@
+From d62aafe2f5b72dcaae95fa26433eed264fa68f84 Mon Sep 17 00:00:00 2001
+From: Wenlong Zhang <zhangwenlong@loongson.cn>
+Date: Tue, 25 Oct 2022 01:42:40 +0000
+Subject: [PATCH] add loongarch support for grubby, Only EFI startup is supported for loongarch64
+
+---
+ grubby.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/grubby.c b/grubby.c
+index 74befea..ea3a636 100644
+--- a/grubby.c
++++ b/grubby.c
+@@ -60,7 +60,7 @@ int debug = 0;	/* Currently just for template debugging */
+ 
+ int isEfi = 0;
+ 
+-#if defined(__aarch64__)
++#if defined(__aarch64__) || (__loongarch64)
+ #define isEfiOnly	1
+ #else
+ #define isEfiOnly	0
+-- 
+2.33.0
+

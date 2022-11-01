@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 29
+Release: 30
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -35,6 +35,7 @@ Patch6017: backport-Fix-maybe-uninitialized-warning.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
 Patch9002: Fix-make-test-fail-for-g2-1.15.patch
+Patch9003: 0001-add-loongarch-support-for-grubby.patch
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -109,6 +110,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Tue Nov 01 2022 Wenlong Zhang <zhangwenlong@loongson.cn> - 8.40-30
+- add loongarch support for grubby 
+
 * Wed Oct 26 2022 yanglongkang <yanglongkang@h-partners.com> - 8.40-29
 - rebuild for next release
 
