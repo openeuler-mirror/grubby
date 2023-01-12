@@ -1,0 +1,55 @@
+From edd876060e6dd1e8fe30a0ec92456d5dde866d3c Mon Sep 17 00:00:00 2001
+From: zhangnan <zhangnan134@huawei.com>
+Date: Mon, 21 Nov 2022 20:53:24 +0800
+Subject: [PATCH] fix grubby delete the last kernel menuentry error
+
+Grubby now does not distinguish whether the last entry is kernel menuentry, so the last kernel menuentry may be deleted, causing the foolproof mechanism to fail.
+This patch add the kernel menuentry identification mechanism to avoid such error.
+
+diff --git a/grubby.c b/grubby.c
+index 4471428..f20b3bd 100644
+--- a/grubby.c
++++ b/grubby.c
+@@ -1845,13 +1845,27 @@ static int writeConfig(struct grubConfig * cfg, char * outName,
+     return rc;
+ }
+ 
+-static int numEntries(struct grubConfig *cfg) {
++static int isKernelEntry(struct singleEntry * entry, struct configFileInfo * cfi) {
++    int findKernel = 0; struct singleLine * line;
++    line = entry->lines;
++    if (isEntryStart(line, cfi)){
++        while (line && !(line->type == LT_KERNEL || line->type == LT_KERNEL_EFI 
++            || line->type == LT_KERNEL_16 || line->type == LT_HYPER || line->type == LT_MBMODULE)){
++            line = line->next;
++        }
++        if (line)
++            findKernel = 1;
++    }
++    return findKernel;
++}
++
++static int numKernelEntries(struct grubConfig *cfg, struct configFileInfo * cfi) {
+     int i = 0;
+     struct singleEntry * entry;
+ 
+     entry = cfg->entries;
+     while (entry) {
+-        if (!entry->skip)
++        if (!entry->skip && isKernelEntry(entry, cfi))
+             i++;
+         entry = entry->next;
+     }
+@@ -5126,7 +5140,7 @@ int main(int argc, const char ** argv) {
+                      newMBKernel, newMBKernelArgs, newDevTreePath)) return 1;
+     
+ 
+-    if (numEntries(config) == 0) {
++    if (numKernelEntries(config, cfi) == 0) {
+         fprintf(stderr, _("grubby: doing this would leave no kernel entries. "
+                           "Not writing out new config.\n"));
+         return 1;
+-- 
+2.27.0
+
+
