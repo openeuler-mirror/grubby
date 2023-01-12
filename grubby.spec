@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 26
+Release: 27
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -33,6 +33,8 @@ Patch6015: backport-Make-SET_VARIABLE-get-handled-individually-in-GetNex.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
 Patch9002: Fix-make-test-fail-for-g2-1.15.patch
+Patch9003: fix-delete-the-last-kernel-menuentry-error.patch
+
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -107,6 +109,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Wed Jan 11 2023 zhangnan <zhangnan134@huawei.com> - 8.40.-27
+- fix delete the last kernel menuentry error
+
 * Thu Jan 7 2021 yangzhuangzhuang <yangzhuangzhuang1@huawe.com> - 8.40-26
 - Fix the following problem:The grub.cfg file is modified.As a result,the system fails to start.
  
