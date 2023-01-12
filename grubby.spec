@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 30
+Release: 31
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -36,6 +36,7 @@ Patch6017: backport-Fix-maybe-uninitialized-warning.patch
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
 Patch9002: Fix-make-test-fail-for-g2-1.15.patch
 Patch9003: 0001-add-loongarch-support-for-grubby.patch
+Patch9004: fix-delete-the-last-kernel-menuentry-error.patch
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -110,6 +111,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Wed Jan 11 2023 zhangnan <zhangnan134@huawei.com> -8.40-31
+- fix delete the last kernel menuentry error
+
 * Mon Nov 28 2022 Wenlong Zhang <zhangwenlong@loongson.cn> - 8.40-30
 - add loongarch support for grubby 
 
