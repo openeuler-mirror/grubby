@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 27
+Release: 28
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -32,8 +32,8 @@ Patch6014: Print-default-image-even-if-isn-t-a-suitable-one.patch
 Patch6015: backport-Make-SET_VARIABLE-get-handled-individually-in-GetNex.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
-Patch9002: Fix-make-test-fail-for-g2-1.15.patch
-Patch9003: fix-delete-the-last-kernel-menuentry-error.patch
+Patch9002: fix-delete-the-last-kernel-menuentry-error.patch
+Patch9003: grubby-aarch64-skip-test-grub2.15.patch
 
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
@@ -69,7 +69,7 @@ meant to only be used for legacy compatibility users with existing grubby users.
 %make_build
 
 %check
-#make test
+make test
 
 %install
 %make_install mandir=%{_mandir} sbindir=%{_sbindir}
@@ -109,7 +109,10 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
-* Wed Jan 11 2023 zhangnan <zhangnan134@huawei.com> - 8.40.-27
+* Sat Feb 18 2023 zhangnan <zhangnan123@huawei.com> - 8.40-28
+- enable make test
+
+* Wed Jan 11 2023 zhangnan <zhangnan134@huawei.com> - 8.40-27
 - fix delete the last kernel menuentry error
 
 * Thu Jan 7 2021 yangzhuangzhuang <yangzhuangzhuang1@huawe.com> - 8.40-26
