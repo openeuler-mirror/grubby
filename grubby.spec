@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 32
+Release: 33
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -37,6 +37,7 @@ Patch9001: fix-make-test-fail-when-no-boot-partition.patch
 Patch9002: 0001-add-loongarch-support-for-grubby.patch
 Patch9003: fix-delete-the-last-kernel-menuentry-error.patch
 Patch9004: grubby-aarch64-skip-test-grub2.15.patch
+Patch9005: fix-no-error-information-when-update-initrd.patch
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -111,6 +112,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Tue Feb 28 2023 zhangnan <zhangnan134@huawei.com> - 8.40-33
+- add more error information alert
+
 * Sat Feb 18 2023 zhangnan <zhangnan134@huawei.com> - 8.40-32
 - enable make test
 
