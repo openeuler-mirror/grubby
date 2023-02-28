@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 26
+Release: 27
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -32,7 +32,7 @@ Patch6014: Print-default-image-even-if-isn-t-a-suitable-one.patch
 Patch6015: backport-Make-SET_VARIABLE-get-handled-individually-in-GetNex.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
-Patch9002: Fix-make-test-fail-for-g2-1.15.patch
+Patch9002: grubby-aarch64-skip-test-grub2.15.patch 
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -67,7 +67,7 @@ meant to only be used for legacy compatibility users with existing grubby users.
 %make_build
 
 %check
-#make test
+make test
 
 %install
 %make_install mandir=%{_mandir} sbindir=%{_sbindir}
@@ -107,6 +107,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Sat Feb 18 2023 zhangnan <zhangnan134@huawei.com> - 8.40-27
+- enable make test
+
 * Thu Jan 7 2021 yangzhuangzhuang <yangzhuangzhuang1@huawei.com> - 8.40-26
 - Fix the following problem:The grub.cfg file is modified.As a result,the system fails to start.
 
