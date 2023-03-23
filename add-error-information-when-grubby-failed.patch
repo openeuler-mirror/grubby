@@ -1,0 +1,78 @@
+From 57b50830da46d5de8880fcac56bf4b7658833f7b Mon Sep 17 00:00:00 2001
+From: zhangnan <zhangnan@huawei.com>
+Date: Thu, 16 Mar 2023 19:38:59 +0800
+Subject: [PATCH] add error information when grubby failed
+
+when grubby failed, there will show error information.
+---
+ new-kernel-pkg | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/new-kernel-pkg b/new-kernel-pkg
+index dbbb479..c9ba481 100755
+--- a/new-kernel-pkg
++++ b/new-kernel-pkg
+@@ -145,7 +145,7 @@ rungrubby() {
+ 	res=$?
+ 	if [ $res != 0 ];
+ 	then
+-		exit 1
++		echo "ERROR! grubby failed!"
+ 	fi
+ 	export -n debugargs
+ 	export -n debugtitle
+@@ -175,13 +175,12 @@ set_title() {
+ install() {
+     # XXX kernel should be able to be specified also (or work right on ia64)
+     if [ ! -f $kernelImage ] ; then
+-	    echo "kernel for $version does not exist, not running grubby"
+-	    exit 1
++	    echo "ERROR! kernel for $version does not exist, not running grubby"
+     fi
+ 
+     if [ -z "$cfgGrub" -a -z "$cfgGrub2" -a -z "$cfgGrub2Efi" -a -z "$cfgLilo" -a -z "$cfgExtlinux" ];
+     then
+-        echo "configuration file does not exist, not running grubby"
++        echo "ERROR! configuration file does not exist, not running grubby"
+     fi
+ 
+     INITRD=""
+@@ -342,7 +341,7 @@ remove() {
+ 
+     if [ -z "$cfgGrub" -a -z "$cfgGrub2" -a -z "$cfgGrub2Efi" -a -z "$cfgLilo" -a -z "$cfgExtlinux" ];
+     then
+-        echo "configuration file does not exist, not running grubby"
++        echo "ERROR! configuration file does not exist, not running grubby"
+     fi
+ 
+     local files
+@@ -403,13 +402,12 @@ remove() {
+ 
+ update() {
+     if [ ! -f $kernelImage ] ; then
+-	    echo "kernel for $version does not exist, not running grubby"
+-	    exit 1
++	    echo "ERROR! kernel for $version does not exist, not running grubby"
+     fi
+ 
+     if [ -z "$cfgGrub" -a -z "$cfgGrub2" -a -z "$cfgGrub2Efi" -a -z "$cfgLilo" -a -z "$cfgExtlinux" ];
+     then
+-        echo "configuration file does not exist, not running grubby"
++        echo "ERROR! configuration file does not exist, not running grubby"
+     fi
+ 
+     set_title
+@@ -797,8 +795,7 @@ elif [ "$initrd" == "remove" ]; then
+ fi
+ 
+ if [ ! -x $grubby ] ; then
+-    echo "$grubby does not exist"
+-    exit 1
++    echo "ERROR! $grubby does not exist"
+ fi
+ 
+ 
+-- 
+2.33.0
+
+

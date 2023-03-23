@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 35
+Release: 36
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -38,6 +38,7 @@ Patch9002: 0001-add-loongarch-support-for-grubby.patch
 Patch9003: fix-delete-the-last-kernel-menuentry-error.patch
 Patch9004: grubby-aarch64-skip-test-grub2.15.patch
 Patch9005: add-error-information-when-update-initrd.patch
+Patch9006: add-error-information-when-grubby-failed.patch
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -112,6 +113,9 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Thu Mar 23 2023 zhangnan <zhangnan134@huawei.com> - 8.40-36
+- add error information when grubby failed
+
 * Wed Mar 8 2023 zhangnan <zhangnan134@huawei.com> - 8.40-35
 - add error information when update initrd and fix return value in new-kernel-pkg
 
