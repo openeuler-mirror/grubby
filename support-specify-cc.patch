@@ -1,0 +1,12 @@
+diff -up grubby-8.40-1/Makefile.orig2 grubby-8.40-1/Makefile
+--- grubby-8.40-1/Makefile.orig2	2023-04-14 22:13:21.745311816 +0800
++++ grubby-8.40-1/Makefile	2023-04-14 22:14:02.729398198 +0800
+@@ -22,7 +22,7 @@ VERSION=8.40
+ TARGETS = grubby
+ OBJECTS = grubby.o log.o
+ 
+-CC = gcc
++CC ?= gcc
+ RPM_OPT_FLAGS ?= -O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fstack-protector
+ CFLAGS += $(RPM_OPT_FLAGS) -std=gnu99 -Wall -Werror -Wno-error=unused-function -Wno-unused-function -ggdb
+ LDFLAGS := $(RPM_LD_FLAGS)
