@@ -1,6 +1,6 @@
 Name: grubby
 Version: 8.40
-Release: 30
+Release: 32
 Summary: Update and display information about the configuration files
 License: GPLv2+
 URL: https://github.com/rhinstaller/grubby
@@ -34,8 +34,9 @@ Patch6016: backport-Fix-stringop-overflow-warning.patch
 Patch6017: backport-Fix-maybe-uninitialized-warning.patch
 
 Patch9001: fix-make-test-fail-when-no-boot-partition.patch
-Patch9002: Fix-make-test-fail-for-g2-1.15.patch
-Patch9003: 0001-add-loongarch-support-for-grubby.patch
+Patch9002: 0001-add-loongarch-support-for-grubby.patch
+Patch9003: grubby-aarch64-skip-test-grub2.15.patch
+Patch9004: support-specify-cc.patch
 
 BuildRequires: gcc pkgconfig glib2-devel popt-devel
 BuildRequires: libblkid-devel git-core sed make
@@ -67,10 +68,14 @@ meant to only be used for legacy compatibility users with existing grubby users.
 %autosetup -n %{name}-%{version}-1 -p1
 
 %build
+%if "%toolchain" == "clang"
+    CFLAGS="$CFLAGS -Wno-error=logical-not-parentheses"
+%endif
+
 %make_build
 
 %check
-#make test
+make test
 
 %install
 %make_install mandir=%{_mandir} sbindir=%{_sbindir}
@@ -110,6 +115,12 @@ sed -e "s,@@LIBEXECDIR@@,%{_libexecdir}/installkernel,g" %{SOURCE3} > %{buildroo
 %{_mandir}/man8/*.8*
 
 %changelog
+* Fri Apr 14 2023 jammyjellyfish <jammyjellyfish255@outlook.com> - 8.40-32
+- Support build with clang
+
+* Sat Feb 18 2023 zhangnan <zhangnan134@huawei.com> - 8.40-31
+- enable make test
+
 * Tue Nov 01 2022 Wenlong Zhang <zhangwenlong@loongson.cn> - 8.40-30
 - add loongarch support for grubby 
 
